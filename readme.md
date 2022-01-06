@@ -30,7 +30,7 @@ statistics is required.
 
 This course will be practical, hands-on, and workshop based. For some topics, there will a very minimal amount of lecture style presentations, i.e., using slides or blackboard, to introduce and explain key concepts and theories, but almost all of our time will be spent doing data wrangling using R. Any code that the instructor produces during these sessions will be uploaded to a publicly available GitHub site after each session.
 
-The course will take place online using Zoom. On each day, the live video broadcasts will occur between (UK local times) between 5pm-9pm.
+The course will take place online using Zoom. On each day, the live video broadcasts will occur between 5pm-10pm (GMT, UTC).
 
 All sessions will be video recorded and made available to all attendees as soon as possible.
   
