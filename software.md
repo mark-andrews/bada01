@@ -193,3 +193,9 @@ install.packages('brms')
 
 7. Test the `brms` code above, i.e. with the `M <- brm(x ~ 1, data = data_df)`.
 
+## And if all else fails when installing `rstan`/`brms`...
+
+
+The following RStudio server project can be used for anyone having trouble with Stan installation.
+[![Binder](https://notebooks.gesis.org/binder/badge_logo.svg)](https://notebooks.gesis.org/binder/v2/gh/mark-andrews/hellobinder-rstan/HEAD?urlpath=rstudio)
+
