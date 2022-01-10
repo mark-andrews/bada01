@@ -147,6 +147,20 @@ devtools::install_git("https://github.com/mark-andrews/bada01.git", subdir = "pr
 ```
 If `devtools` is not available, install it with `install.packages('devtools')`.
 
+Note that the command above is `devtools::install_git`, and not `devtools::install_github`, which is perhaps more commonly used.
+You can, however, use `devtools::install_github` as follows:
+```r
+devtools::install_github("mark-andrews/bada01", subdir = "priorexposure")
+```
+
+When use these installation commands from `devtools`, you are routinely asked to update all dependent packages.
+Usually, you do *not* need to do this to get a working installation.
+If the dependent packages are relatively up to date, i.e. no more than a year old, then they should be fine, and you can skip any upgrading.
+You can also use `upgrade = 'never'` in the command itself, e.g. 
+```r
+devtools::install_github("mark-andrews/bada01", subdir = "priorexposure", upgrade = 'never')
+```
+
 ## Trouble getting `rstan` and `brms` working on Windows using R 4.0 (and higher)?
 
 Here's what I did to get `rstan` and `brsm` working on Windows using R 4.0 (and higher)?
