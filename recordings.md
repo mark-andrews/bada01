@@ -9,7 +9,7 @@ These are password protected, and you will have been given this password in the 
 # Day 2
 
 * [Session 1](https://vimeo.com/664932064)
-* Session 2
+* [Session 2](https://vimeo.com/665011490)
 
 # Day 3
 
