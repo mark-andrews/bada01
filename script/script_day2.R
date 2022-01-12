@@ -34,3 +34,16 @@ summary(M_lm)
 # Bayesian linear regression using Stan via brms --------------------------
 
 M_bayes <- brm(y ~ x_1 + x_2, data = data_df1)
+
+M_bayes
+
+plot(M_bayes)
+
+mcmc_plot(M_bayes)
+mcmc_plot(M_bayes, type = 'hist', binwidth = 0.05)
+mcmc_plot(M_bayes, type = 'areas')
+mcmc_plot(M_bayes, type = 'areas_ridges')
+
+prior_summary(M_bayes)
+
+get_prior(y ~ x_1 + x_2, data = data_df1)
