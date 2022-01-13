@@ -162,4 +162,105 @@ ggplot(data_df4,
        aes(x = x, y = y)
 ) + geom_point()
 
+M10 <- lm(y ~ x, data = data_df3)
+M11 <- lm(y ~ x, data = data_df4)
 
+
+coef(M10)
+confint(M10)
+coef(M11)
+confint(M11)
+
+
+M12 <- brm(y ~ x, data = data_df4)
+M13 <- brm(y ~ x, data = data_df3)
+fixef(M12)
+fixef(M13)
+mcmc_plot(M13, type = 'areas')
+mcmc_plot(M12, type = 'areas')
+
+M14 <- brm(y ~ x, 
+           data = data_df4, 
+           family = student())
+          
+mcmc_plot(M14, type = 'areas')
+
+loo(M12, M14)
+waic(M12, M14)
+
+
+# logistic ----------------------------------------------------------------
+
+
+weight_df_male <- mutate(weight_df_male, dweight = weight > 80)
+
+M15 <- brm(dweight ~ height, 
+           family = bernoulli(),
+           data = weight_df_male)
+
+
+new_prior <- c(
+  set_prior('normal(0, 10)', class = 'b', coef = 'height'),
+  set_prior('normal(0, 10)', class = 'Intercept')
+)
+
+M16 <- brm(dweight ~ height, 
+           family = bernoulli(),
+           prior = new_prior,
+           data = weight_df_male)
+
+head(predict(M16))
+
+
+# Count models ------------------------------------------------------------
+
+biochem_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/bada01/main/data/biochemist.csv")
+biochem_df
+
+
+M17 <- brm(publications ~ prestige,
+           data = biochem_df,
+           family = poisson())
+
+
+M18 <- glm(publications ~ prestige,
+           data = biochem_df,
+           family = poisson())
+
+prior_summary(M17)
+
+
+# Negative binomial -------------------------------------------------------
+
+M19 <- brm(publications ~ prestige,
+           data = biochem_df,
+           family = negbinomial()
+)
+
+loo(M17)
+loo(M19)
+loo(M17, M19)
+
+predict(M19, newdata = tibble(prestige = seq(5)))
+
+predict(M19, newdata = tibble(prestige = seq(5))) %>% 
+  as_tibble(rownames = 'prestige') %>% 
+  ggplot(aes(y = Estimate, x = prestige)) + geom_col()
+
+posterior_linpred(M19, 
+                  newdata = tibble(prestige = seq(5)),
+                  transform = T) %>% 
+  apply(2, quantile)
+
+
+
+# Zero inflated models ----------------------------------------------------
+
+
+smoking_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/bada01/main/data/smoking.csv")
+
+smoking_df
+
+M20 <- brm(cigs ~ educ,
+           data = smoking_df,
+           family = zero_inflated_poisson())
