@@ -47,3 +47,67 @@ mcmc_plot(M_bayes, type = 'areas_ridges')
 prior_summary(M_bayes)
 
 get_prior(y ~ x_1 + x_2, data = data_df1)
+
+
+# Changing defaults -------------------------------------------------------
+
+M2 <- brm(y ~ x_1 + x_2,
+          data = data_df1,
+          iter = 2500,
+          warmup = 500,
+          chains = 4,
+          #cores = 4,
+          seed = 10101,
+          prior = set_prior('normal(0, 100)')
+)
+          
+fixef(M_bayes)    # flat priors
+fixef(M2)
+prior_summary(M2)
+
+
+# Coin model --------------------------------------------------------------
+
+M3 <- brm(m | trials(n) ~ 1,
+          data = data.frame(m = 139, n = 250),
+          family = binomial(link = 'identity'),
+          prior = set_prior('beta(1,1)', class = 'Intercept'))
+
+
+
+# Real data ---------------------------------------------------------------
+
+weight_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/bada01/main/data/weight.csv")
+
+weight_df_male <- filter(weight_df, gender == 'male')
+
+M4 <- lm(weight ~ height + age, data = weight_df_male)
+summary(M4)
+
+M5 <- brm(weight ~ height + age, data = weight_df_male)
+M5
+
+bayes_R2(M5)
+
+prior_summary(M5)
+
+new_prior <- c(
+  set_prior('normal(0, 10)', class = 'b', coef = 'age'),
+  set_prior('normal(0, 10)', class = 'b', coef = 'height'),
+  set_prior('normal(0, 100)', class = 'Intercept'),
+  set_prior('student_t(1, 0, 30)', class = 'sigma')
+)
+  
+M6 <- brm(weight ~ height + age, 
+          prior = new_prior,
+          data = weight_df_male)
+
+
+fixef(M6)
+fixef(M5)
+
+
+
+# Model comparison --------------------------------------------------------
+
+M7 <- brm(weight ~ height, data = weight_df_male)
