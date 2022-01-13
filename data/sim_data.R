@@ -42,7 +42,7 @@ data_df3 <- tibble(x = rnorm(n),
                   y = 5 + 0.5 * x + rnorm(n, sd = 0.1))
 
 
-data_df4 <- data_df2
+data_df4 <- data_df3
 data_df4[12,2] <- 7.5
 
 

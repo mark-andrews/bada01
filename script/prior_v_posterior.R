@@ -1,6 +1,4 @@
 library(tidyverse)
-
-library(tidyverse)
 library(brms)
 
 data_df <- tibble(x = rnorm(10))
@@ -11,7 +9,7 @@ mcmc_plot(M)
 P <- brm(x ~ 1, data = data_df, sample_prior = 'only')
 mcmc_plot(P)
 
-Q <- brm(x ~ 1, data = data_df, sample_prior = 'yes')
+
 
 # put prior and posterior sampels together
 samples <- bind_rows(

@@ -111,3 +111,55 @@ fixef(M5)
 # Model comparison --------------------------------------------------------
 
 M7 <- brm(weight ~ height, data = weight_df_male)
+loo(M7)
+loo(M5)
+loo(M7, M5)
+
+waic(M7)
+waic(M5)
+waic(M5, M7)
+
+# Extending linear models -------------------------------------------------
+
+set.seed(10101)
+n <- 250
+data_df2 <- tibble(A = rnorm(n, mean = 1, sd = 1),
+                   B = rnorm(n, mean = 0.25, sd = 2)
+) %>% pivot_longer(cols = everything(), names_to = 'x', values_to = 'y')
+
+
+ggplot(data_df2, aes(x = x, y = y)) + geom_boxplot()
+
+
+M8 <- brm(y ~ x, data = data_df2)
+M8
+
+M9 <- brm(
+  bf(y ~ x, sigma ~ x),
+  data = data_df2
+)
+
+M9
+
+
+
+# Outliers ----------------------------------------------------------------
+
+set.seed(10101)
+n <- 25
+data_df3 <- tibble(x = rnorm(n),
+                   y = 5 + 0.5 * x + rnorm(n, sd = 0.1))
+
+
+data_df4 <- data_df3
+data_df4[12,2] <- 7.5
+
+ggplot(data_df3,
+       aes(x = x, y = y)
+) + geom_point()
+
+ggplot(data_df4,
+       aes(x = x, y = y)
+) + geom_point()
+
+
