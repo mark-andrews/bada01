@@ -24,4 +24,4 @@ These are password protected, and you will have been given this password in the 
 # Day 5
 
 * [Session 1](https://vimeo.com/666111577)
-* [Session 2](https://vimeo.com/666173383)
+* [Session 2](https://vimeo.com/666175283)
