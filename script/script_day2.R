@@ -317,3 +317,60 @@ M27 <- brm(Reaction ~ Days + (Days|Subject),
            data = sleepstudy)
 
 prior_summary(M27)
+
+
+M28 <- brm(Reaction ~ Days, data = sleepstudy)
+
+# random intercepts only
+M29 <- brm(Reaction ~ Days + (1|Subject), 
+           data = sleepstudy)
+
+# random slopes only
+M30 <- brm(Reaction ~ Days + (0 + Days|Subject), 
+           data = sleepstudy)
+
+M31 <- brm(Reaction ~ Days + (Days || Subject), 
+           data = sleepstudy)
+
+waic(M27, M28, M29, M30, M31)
+loo(M27, M28, M29, M30, M31)
+
+
+# nested model ------------------------------------------------------------
+
+M32 <- lmer(mathscore ~ ses + (ses|classid) + (ses|schoolid),
+            data = classroom_df)
+M32a <- lmer(mathscore ~ ses + (ses||classid) + (ses|schoolid),
+            data = classroom_df)
+M32b <- lmer(mathscore ~ ses + (1|classid) + (ses|schoolid),
+             data = classroom_df)
+
+
+M33 <- brm(mathscore ~ ses + (ses|classid) + (ses|schoolid),
+            data = classroom_df)
+
+# change prior on cor
+M34 <- brm(mathscore ~ ses + (ses|classid) + (ses|schoolid),
+           prior = set_prior('lkj(2)', class = 'L', group = 'classid'),
+           cores = 4,
+           data = classroom_df)
+
+
+
+# Mixed effects ordinal logistic ------------------------------------------
+
+M35 <- brm(like ~ PrivPub + sex + (1|school) + (1|Class),
+    data = science_df,
+    cores = 4,
+    family = cumulative('logit'))
+    
+
+
+
+# Neg bin mixed effects  --------------------------------------------------
+
+M36 <- brm(SiblingNegotiation ~ SexParent + offset(log(BroodSize)) + (1|Nest),
+           family = zero_inflated_negbinomial(),
+           cores = 4,
+           data = owls)
+
