@@ -261,6 +261,59 @@ smoking_df <- read_csv("https://raw.githubusercontent.com/mark-andrews/bada01/ma
 
 smoking_df
 
+# zip 
 M20 <- brm(cigs ~ educ,
            data = smoking_df,
            family = zero_inflated_poisson())
+
+# vanilla poisson
+M21 <- brm(cigs ~ educ,
+           data = smoking_df,
+           family = poisson())
+
+# zinb
+M22 <- brm(cigs ~ educ,
+           data = smoking_df,
+           family = zero_inflated_negbinomial())
+
+# vanilla neg bin
+M23 <- brm(cigs ~ educ,
+           data = smoking_df,
+           family = negbinomial())
+
+# zip ++ 
+M24 <- brm(bf(cigs ~ educ, 
+              zi ~ educ),
+           data = smoking_df,
+           family = zero_inflated_poisson())
+
+
+# zinb ++ 
+M25 <- brm(bf(cigs ~ educ,
+              zi ~ educ),
+           data = smoking_df,
+           family = zero_inflated_negbinomial())
+
+waic(M20, M21, M22, M23, M24, M25)
+loo(M20, M21, M22, M23, M24, M25)
+
+
+# Linear mixed effect; aka multilevel linear ------------------------------
+
+library(lme4)
+
+ggplot(sleepstudy,
+       aes(x = Days, y = Reaction, colour = Subject) 
+) + geom_point() + stat_smooth(method = 'lm', se = F) +
+  facet_wrap(~Subject)
+
+
+M26 <- lmer(Reaction ~ Days + (Days|Subject), 
+            data = sleepstudy)
+
+summary(M26)
+
+M27 <- brm(Reaction ~ Days + (Days|Subject), 
+           data = sleepstudy)
+
+prior_summary(M27)
